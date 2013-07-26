@@ -160,13 +160,13 @@ static NSString* const kRROKAlertButtonTitle = @"OK";
 - (void)endRoute {
     RouteRecorder *routeRecorder = [RouteRecorder sharedInstance];
     if(routeRecorder.currentRoute) {
-        [self showAlertViewWithTitle:kRREndRecordingAlertTitle message:@"Your route has been recorded" buttonTitle:kRRRouteDetailsButtonTitle];
         [[RouteRecorder sharedInstance] endRecording];
+        [self animateEndRoute];
     }
     else {
-        [self showAlertViewWithTitle:kRREndRecordingAlertTitle message:@"You have not started a route yet" buttonTitle:kRRRouteDetailsButtonTitle];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kRREndRecordingAlertTitle message:@"You have not started a route yet" delegate:self cancelButtonTitle:kRROKAlertButtonTitle otherButtonTitles:nil];
+        [alert show];
     }
-
 }
 
 #pragma mark - Segues
@@ -176,6 +176,51 @@ static NSString* const kRROKAlertButtonTitle = @"OK";
         SettingsViewController *settingsViewController = segue.destinationViewController;
         settingsViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     }
+}
+
+- (void)animateEndRoute{
+    UIImage *route = [UIImage imageNamed:@"roadIcon.png"];
+    UIImageView *routeView = [[UIImageView alloc] initWithImage:route];
+    
+    routeView.frame = CGRectMake(self.view.bounds.size.width / 2 + 30, self.view.bounds.size.height / 2 - 100, 40, 40);
+    
+    [self.view addSubview:routeView];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        routeView.frame = CGRectMake(self.view.bounds.size.width / 2 + 40, self.view.bounds.size.height / 2 - 120, 80, 80);
+    } completion:^(BOOL finished) {
+        if (finished){
+            [UIView animateWithDuration:0.3 animations:^{
+                routeView.frame = CGRectMake(self.view.bounds.size.width / 2 + 75, self.view.bounds.size.height / 2 + 40, 0, 0);
+            } completion:^(BOOL finished) {
+                if (finished){
+                    [routeView removeFromSuperview];
+                    [self shakeView:self.archiveViewButton.iconView];
+                }
+            }];
+        }
+    }];
+}
+
+- (void)shakeView:(UIView *)viewToShake
+{
+    CGFloat t = 2.0;
+    
+    CGAffineTransform translateRight  = CGAffineTransformTranslate(CGAffineTransformIdentity, t, 0.0);
+    CGAffineTransform translateLeft = CGAffineTransformTranslate(CGAffineTransformIdentity, -t, 0.0);
+    
+    viewToShake.transform = translateLeft;
+    
+    [UIView animateWithDuration:0.07 delay:0.0 options:UIViewAnimationOptionAutoreverse|UIViewAnimationOptionRepeat animations:^{
+        [UIView setAnimationRepeatCount:2.0];
+        viewToShake.transform = translateRight;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [UIView animateWithDuration:0.05 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                viewToShake.transform = CGAffineTransformIdentity;
+            } completion:NULL];
+        }
+    }];
 }
 
 

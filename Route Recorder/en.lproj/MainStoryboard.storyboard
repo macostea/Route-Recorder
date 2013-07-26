@@ -21,7 +21,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z4R-ch-rUo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-38" y="77"/>
+            <point key="canvasLocation" x="-60" y="89"/>
         </scene>
         <!--Main View Controller - Route Recorder-->
         <scene sceneID="aYe-bu-MNc">

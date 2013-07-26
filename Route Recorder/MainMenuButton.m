@@ -12,7 +12,6 @@
 
 @interface MainMenuButton()
 
-@property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @end

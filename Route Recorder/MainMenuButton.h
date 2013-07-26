@@ -21,5 +21,6 @@
 @property (weak, nonatomic) id<MainMenuButtonDelegate> delegate;
 @property (strong, nonatomic) UIImage *icon;
 @property (strong, nonatomic) NSString *title;
+@property (nonatomic, strong) UIImageView *iconView;
 
 @end
